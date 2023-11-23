@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "846609336145",
+    "project_id": "bornesan-daaf1",
+    "storage_bucket": "bornesan-daaf1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:846609336145:android:08d3e8496231d18dafb570",
+        "android_client_info": {
+          "package_name": "com.example.bornesan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEs1biooA386ZGKQxTmAAC6MXTCgDFbZo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
