@@ -3,7 +3,7 @@ import 'package:bornesan/reusable_widgets/reusable_widget.dart';
 import 'package:flutter/material.dart';
 
 class ResetPassword extends StatefulWidget {
-  const ResetPassword({Key? key}) : super(key: key);
+  const ResetPassword({super.key});
 
   @override
   ResetPasswordState createState() => ResetPasswordState();
@@ -11,6 +11,7 @@ class ResetPassword extends StatefulWidget {
 
 class ResetPasswordState extends State<ResetPassword> {
   final TextEditingController _emailTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,8 +30,8 @@ class ResetPasswordState extends State<ResetPassword> {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xFF49A078), // #49A078
-              Color(0xFF216869), // #216869
+              Color.fromRGBO(135, 196, 255, 1.0),
+              Color.fromRGBO(31, 109, 255, 1),
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -47,7 +48,7 @@ class ResetPasswordState extends State<ResetPassword> {
                 reusableTextField(
                   "Enter Email",
                   Icons.person_outline,
-                  false, // White text on custom background
+                  false,
                   _emailTextController,
                 ),
                 const SizedBox(

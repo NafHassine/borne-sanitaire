@@ -1,15 +1,15 @@
-// ignore_for_file: avoid_print, use_build_context_synchronously
+import 'package:bornesan/screens/home_user.dart';
+import 'package:bornesan/screens/home_dmin.dart';
 
-import 'package:bornesan/screens/home_admin.dart';
-import 'package:bornesan/screens/home_superadmin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bornesan/reusable_widgets/reusable_widget.dart';
 import 'package:bornesan/screens/reset_password.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:bornesan/reusable_widgets/waitingwidget.dart';
 
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+  const SignInScreen({super.key});
 
   @override
   SignInScreenState createState() => SignInScreenState();
@@ -18,6 +18,7 @@ class SignInScreen extends StatefulWidget {
 class SignInScreenState extends State<SignInScreen> {
   final TextEditingController _passwordTextController = TextEditingController();
   final TextEditingController _emailTextController = TextEditingController();
+  bool _isloading = false;
 
   Future<bool> isUserAdmin(String userId) async {
     try {
@@ -28,22 +29,22 @@ class SignInScreenState extends State<SignInScreen> {
 
       if (doc.exists) {
         final Map<String, dynamic>? userData =
-            doc.data() as Map<String, dynamic>?; // Cast to the expected type
+            doc.data() as Map<String, dynamic>?;
         final String userRole = userData?['role'] ?? '';
-        // ...
-        // Assuming 'role' is the field name
-        // Check if the user's role is 'admin'
         return userRole.toLowerCase() == 'admin';
       }
-      return false; // User not found in Firestore, assume not an admin
+      return false;
     } catch (error) {
       print("Error fetching user data: $error");
-      return false; // Handle the error appropriately
+      return false;
     }
   }
 
   void navigateToHomeScreen() async {
     try {
+      setState(() {
+        _isloading = true;
+      });
       final UserCredential userCredential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailTextController.text,
@@ -61,12 +62,13 @@ class SignInScreenState extends State<SignInScreen> {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => targetScreen,
         ));
-      } else {
-        // Handle authentication failure
-      }
+      } else {}
     } catch (error) {
       print("Error: $error");
-      // Handle authentication error
+    } finally {
+      setState(() {
+        _isloading = false;
+      });
     }
   }
 
@@ -78,7 +80,10 @@ class SignInScreenState extends State<SignInScreen> {
         height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF49A078), Color(0xFF216869)], // Mix of colors
+            colors: [
+              Color.fromRGBO(135, 196, 255, 1.0),
+              Color.fromRGBO(31, 109, 255, 1),
+            ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -95,7 +100,7 @@ class SignInScreenState extends State<SignInScreen> {
               reusableTextField(
                 "Enter Your Email",
                 Icons.person_outline,
-                false, // White text on custom background
+                false,
                 _emailTextController,
               ),
               const SizedBox(
@@ -104,7 +109,7 @@ class SignInScreenState extends State<SignInScreen> {
               reusableTextField(
                 "Enter Password",
                 Icons.lock_outline,
-                false, // White text on custom background
+                true,
                 _passwordTextController,
               ),
               const SizedBox(
@@ -131,7 +136,9 @@ class SignInScreenState extends State<SignInScreen> {
               const SizedBox(
                 height: 20,
               ),
-              firebaseUIButton(context, "Sign In", navigateToHomeScreen),
+              _isloading
+                  ? const WaitingWidget()
+                  : firebaseUIButton(context, "Sign In", navigateToHomeScreen),
             ]),
           ),
         ),

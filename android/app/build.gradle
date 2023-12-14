@@ -28,7 +28,7 @@ android {
     namespace "com.example.bornesan"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
-    compileSdkVersion 33
+    compileSdkVersion 34
     
 
     compileOptions {
@@ -55,6 +55,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
+        minSdkVersion 21 
        
     }
 
